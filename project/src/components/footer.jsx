@@ -8,7 +8,7 @@ class Footer extends Component {
         <footer class="page-footer font-small blue">
           <div class="footer-copyright text-center py-3">
             © 2018 Copyright:
-            <a href="#"> Hello World</a>
+            <a href="#"> UB Platform Group</a>
           </div>
         </footer>
       </React.Fragment>

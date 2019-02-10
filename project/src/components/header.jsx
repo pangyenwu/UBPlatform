@@ -7,7 +7,7 @@ class Header extends Component {
       <React.Fragment>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">
-            Navbar
+            UB Book Platform
           </a>
           <button
             class="navbar-toggler"
