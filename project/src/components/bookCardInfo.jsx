@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class BookCardInfo extends Component {
   render() {
     return (
-      <div class="col-sm-3">
+      <div className="col-sm-3" style={{ display: "inline-grid" }}>
         <div className="card">
           <div className="card-body">
             <div className="badge badge-primary">

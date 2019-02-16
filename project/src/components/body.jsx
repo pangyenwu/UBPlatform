@@ -141,7 +141,7 @@ class Body extends Component {
     console.log(this.state.Json);
 
     return (
-      <div class="row">
+      <div>
         {this.state.data.book.map(book => (
           <BookCardInfo key={book.id} bookInfo={book} />
         ))}
