@@ -11,37 +11,36 @@ class Footer extends Component {
           <div className="container-fluid text-center text-md-left">
             <div className="row">
               <div className="col-md-6 mt-md-0 mt-3">
-                <h5 className="text-uppercase">About UB Platform</h5>
+                <h5 className="text-uppercase">Contact US</h5>
                 <p>
-                  a online platform for the University at Buffalo students to
-                  exchange or sell a school supplies directly.
+                  Email: Please contact us xliu72@buffalo.edu Phone: 4152839557
                 </p>
               </div>
 
               <hr className="clearfix w-100 d-md-none pb-3" />
 
               <div className="col-md-3 mb-md-0 mb-3">
-                <h5 className="text-uppercase">Buy</h5>
+                <h5 className="text-uppercase">Career Page</h5>
 
                 <ul className="list-unstyled">
                   <li>
-                    <a href="#!">Policies</a>
+                    <a href="#!">Join Team</a>
                   </li>
                   <li>
-                    <a href="#!">Policies</a>
+                    <a href="#!">Seek Career</a>
                   </li>
                 </ul>
               </div>
 
               <div className="col-md-3 mb-md-0 mb-3">
-                <h5 className="text-uppercase">Sell</h5>
+                <h5 className="text-uppercase">See Team</h5>
 
                 <ul className="list-unstyled">
                   <li>
-                    <a href="#!">Link 1</a>
+                    <a href="#!">Post Question</a>
                   </li>
                   <li>
-                    <a href="#!">Link 2</a>
+                    <a href="#!">Seek Question</a>
                   </li>
                 </ul>
               </div>
