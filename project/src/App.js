@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Body from "./components/body";
+import Register from "./components/register";
+import Login from "./components/login";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import axios from "axios";
@@ -67,6 +69,12 @@ class App extends Component {
       .then(res => this.setState({ data: res.data }));
   };
 
+  loginformation = () => {
+    fetch("http://localhost:3001/api/getData")
+      .then(data => data.json())
+      .then(res => this.setState({ data: res.data }));
+  };
+
   // our put method that uses our backend api
   // to create new query into our data base
   // # json = json object
@@ -76,6 +84,17 @@ class App extends Component {
       .then(res => {
         console.log(res);
         console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  putDataToUserDB = json => {
+    axios
+      .post("http://localhost:3001/api/putUser", json)
+      .then(res => {
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
@@ -120,11 +139,18 @@ class App extends Component {
       axios.post("http://localhost:3001/api/putData", bok);
     });
   };
+  //This is change
+  LogintoDB = json => {
+    console.log(json);
+  };
 
   render() {
     const { data } = this.state;
     return (
       <React.Fragment>
+        <Register putDataToUserDB={this.putDataToUserDB} />
+        <Login LogintoDB={this.LogintoDB} />
+
         <Header />
         <AddBook putDataToDB={this.putDataToDB} />
         <button onClick={this.deleteAll}>Delete All</button>

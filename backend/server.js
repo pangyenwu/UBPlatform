@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const Data = require("./data");
+const User = require("./user");
 const { ObjectId } = require("mongodb");
 const mongodb = require("mongodb");
 
@@ -82,6 +83,25 @@ router.post("/putData", (req, res) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
+});
+
+// this method adds new data in our database
+router.post("/putUser", (req, res) => {
+  let user = new User();
+  const { username, email, password, firstname, lastname } = req.body;
+  user.username = username;
+  user.email = email;
+  user.firstname = firstname;
+  user.lastname = lastname;
+  user.password = password;
+  user.save(err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+//This is change
+router.get("/loginByIdpassword", (req, res) => {
+
 });
 
 // append /api for our http requests
