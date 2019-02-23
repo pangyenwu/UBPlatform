@@ -1,0 +1,32 @@
+{
+  "name": "project",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ajv": "^6.8.1",
+    "axios": "^0.18.0",
+    "gatsby-plugin-react-helmet": "^3.0.6",
+    "mongodb": "^3.1.13",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-headroom": "^2.2.4",
+    "react-helmet": "^5.2.0",
+    "react-scripts": "^2.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3001",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
