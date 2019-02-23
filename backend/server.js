@@ -85,6 +85,7 @@ router.post("/putData", (req, res) => {
   });
 });
 
+//test
 // this method adds new data in our database
 router.post("/putUser", (req, res) => {
   let user = new User();
@@ -99,9 +100,15 @@ router.post("/putUser", (req, res) => {
     return res.json({ success: true });
   });
 });
-//This is change
-router.get("/loginByIdpassword", (req, res) => {
 
+router.post("/login", (req, res) => {
+  User.findOne(
+    { username: req.body.username, password: req.body.password },
+    function(err, user) {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, user: user });
+    }
+  );
 });
 
 // append /api for our http requests

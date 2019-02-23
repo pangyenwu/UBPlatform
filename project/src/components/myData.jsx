@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Body from "./components/body";
-import Register from "./components/register";
-import Login from "./components/login";
-import Header from "./components/header";
-import Footer from "./components/footer";
 import axios from "axios";
-import AddBook from "./components/addBook";
-import Content from "./components/content";
+import Body from "./body";
 
-class App extends Component {
-  // initialize our state
+export const MyContext = React.createContext();
+
+class MyData extends Component {
   state = {
     data: [],
     intervalIsSet: false,
@@ -37,14 +30,13 @@ class App extends Component {
     ]
   };
 
-  componentWillMount() {
-    this.getDataFromDb();
+  constructor(prop) {
+    super(prop);
     this.setState({
       content: (
-        <Body state={this.state} deleteByIdFromDB={this.deleteByIdFromDB} />
+        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
       )
     });
-    console.log(this.state.data);
   }
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -166,25 +158,27 @@ class App extends Component {
   updateData = datas => {
     this.setState({ data: datas });
   };
-
   render() {
     return (
-      <React.Fragment>
-        <Header />
-        {/* <Content state={this.state} /> */}
-        {/* {console.log(this.state.data)} */}
-
-        {/* {this.state.content} */}
-        <Register putDataToUserDB={this.putDataToUserDB} />
-        <Login LogintoDB={this.LogintoDB} />
-        <AddBook putDataToDB={this.putDataToDB} />
-        <button onClick={this.deleteAll}>Delete All</button>
-        <button onClick={() => this.addAll(this.state.book)}>Add All</button>
-        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
-        <Footer />
-      </React.Fragment>
+      <MyContext.Provider
+        value={{
+          state: this.state,
+          getDataFromDb: this.getDataFromDb,
+          loginformation: this.loginformation,
+          putDataToDB: this.putDataToDB,
+          putDataToUserDB: this.putDataToUserDB,
+          deleteByIdFromDB: this.deleteByIdFromDB,
+          updateDB: this.updateDB,
+          deleteAll: this.deleteAll,
+          addAll: this.addAll,
+          LogintoDB: this.LogintoDB,
+          updateData: this.updateData
+        }}
+      >
+        {this.props.children}
+      </MyContext.Provider>
     );
   }
 }
 
-export default App;
+export default MyData;

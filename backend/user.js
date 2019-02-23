@@ -1,4 +1,4 @@
-// /backend/data.js
+// /backend/user.js
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 

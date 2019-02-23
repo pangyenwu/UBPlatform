@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 
 class Footer extends Component {
-  state = {};
-
   render() {
     return (
       <React.Fragment>
