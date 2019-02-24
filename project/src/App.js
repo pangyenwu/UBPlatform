@@ -10,6 +10,7 @@ import axios from "axios";
 import AddBook from "./components/addBook";
 import Content from "./components/content";
 import AccountPage from "./components/accountPage";
+import { Alert } from "react-bootstrap";
 
 class App extends Component {
   // initialize our state
@@ -21,6 +22,8 @@ class App extends Component {
     objectToUpdate: null,
     content: null,
     user: null,
+    currentSellingBook: [],
+    deleteByIdFromDB: null,
     book: [
       {
         title: "Harry Potter",
@@ -53,7 +56,8 @@ class App extends Component {
               data={this.state.data}
               deleteByIdFromDB={this.deleteByIdFromDB}
             />
-          )
+          ),
+          deleteByIdFromDB: this.deleteByIdFromDB
         });
       });
 
@@ -162,7 +166,7 @@ class App extends Component {
       .post("http://localhost:3001/api/login", json)
       .then(res => {
         this.setState({ user: res.data.user });
-        console.log(res.data.user);
+        this.setAccountPage();
       })
       .catch(err => {
         console.log(err);
@@ -187,9 +191,36 @@ class App extends Component {
       content: <Register putDataToUserDB={this.putDataToUserDB} />
     });
   };
-  setAccountPage = object => {
-    this.setState({ content: object });
+  setAccountPage = () => {
+    if (this.state.user == null) {
+      return console.log("login first");
+    }
+    this.getMyCurrentSellingBook({ owner: this.state.user.username });
   };
+
+  //new function for getting current selling book
+  getMyCurrentSellingBook = obj => {
+    axios
+      .post("http://localhost:3001/api/search", obj)
+      .then(res => {
+        this.setState({ currentSellingBook: res.data.data });
+
+        this.setState({
+          content: (
+            <AccountPage
+              user={this.state.user}
+              putDataToDB={this.putDataToDB}
+              currentSellingBook={res.data.data}
+              deleteByIdFromDB={this.state.deleteByIdFromDB}
+            />
+          )
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -203,6 +234,11 @@ class App extends Component {
         />
 
         {this.state.content}
+
+        <button onClick={() => this.getMyCurrentSellingBook({ owner: "Ying" })}>
+          test
+        </button>
+
         {/* <Register putDataToUserDB={this.putDataToUserDB} />
         <Login LogintoDB={this.LogintoDB} /> */}
         {/* <button onClick={this.deleteAll}>Delete All</button>

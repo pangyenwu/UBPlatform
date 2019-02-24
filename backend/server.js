@@ -7,7 +7,6 @@ const Data = require("./data");
 const User = require("./user");
 const { ObjectId } = require("mongodb");
 const mongodb = require("mongodb");
-
 const API_PORT = 3001;
 const app = express();
 
@@ -74,10 +73,11 @@ router.delete("/deleteByIdData", (req, res) => {
 // this method adds new data in our database
 router.post("/putData", (req, res) => {
   let data = new Data();
-  const { title, price, course, url } = req.body;
+  const { title, price, course, url, owner } = req.body;
   data.title = title;
   data.price = price;
   data.course = course;
+  data.owner = owner;
   data.url = url;
   data.save(err => {
     if (err) return res.json({ success: false, error: err });
@@ -109,6 +109,13 @@ router.post("/login", (req, res) => {
       return res.json({ success: true, user: user });
     }
   );
+});
+
+router.post("/search", (req, res) => {
+  Data.find(req.body, function(err, data) {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
 });
 
 // append /api for our http requests

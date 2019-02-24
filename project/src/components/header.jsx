@@ -30,12 +30,7 @@ class Header extends Component {
               href="#accountPage"
               onSelect={() => {
                 console.log(this.props.state.user);
-                this.props.setAccountPage(
-                  <AccountPage
-                    user={this.props.state.user}
-                    putDatatoDB={this.putDatatoDB}
-                  />
-                );
+                this.props.setAccountPage();
               }}
             >
               Account
