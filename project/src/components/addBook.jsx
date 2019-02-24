@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { MyContext } from "./myData";
 
 class AddBook extends Component {
   state = { title: null, price: null, course: null, url: null };
@@ -48,14 +49,14 @@ class AddBook extends Component {
 
         <button
           style={{ width: "200px" }}
-          onClick={() =>
+          onClick={() => {
             this.props.putDataToDB({
               title: this.state.title,
               price: this.state.price,
               course: this.state.course,
               url: this.state.url
-            })
-          }
+            });
+          }}
         >
           ADD
         </button>

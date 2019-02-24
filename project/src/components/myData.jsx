@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Body from "./components/body";
-import Register from "./components/register";
-import Login from "./components/login";
-import Header from "./components/header";
-import Footer from "./components/footer";
 import axios from "axios";
-import AddBook from "./components/addBook";
-import Content from "./components/content";
+import Body from "./body";
 
-class App extends Component {
-  // initialize our state
+export const MyContext = React.createContext();
+
+class MyData extends Component {
   state = {
     data: [],
     intervalIsSet: false,
@@ -37,24 +30,20 @@ class App extends Component {
     ]
   };
 
+  constructor(prop) {
+    super(prop);
+    this.setState({
+      content: (
+        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
+      )
+    });
+  }
+
   // when component mounts, first thing it does is fetch all existing data in our db
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
   componentDidMount() {
-    fetch("http://localhost:3001/api/getData")
-      .then(data => data.json())
-      .then(res => this.setState({ data: res.data }))
-      .then(result => {
-        this.setState({
-          content: (
-            <Body
-              data={this.state.data}
-              deleteByIdFromDB={this.deleteByIdFromDB}
-            />
-          )
-        });
-      });
-
+    this.getDataFromDb();
     if (!this.state.intervalIsSet) {
       let interval = setInterval(this.getDataFromDb, 1000);
       this.setState({ intervalIsSet: interval });
@@ -169,41 +158,27 @@ class App extends Component {
   updateData = datas => {
     this.setState({ data: datas });
   };
-  setHome = () => {
-    this.setState({
-      content: (
-        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
-      )
-    });
-  };
-  setLogin = () => {
-    this.setState({ content: <Login LogintoDB={this.LogintoDB} /> });
-  };
-  setRegister = () => {
-    this.setState({
-      content: <Register putDataToUserDB={this.putDataToUserDB} />
-    });
-  };
   render() {
     return (
-      <React.Fragment>
-        <Header
-          setLogin={this.setLogin}
-          setHome={this.setHome}
-          setRegister={this.setRegister}
-        />
-
-        {this.state.content}
-        {/* <Register putDataToUserDB={this.putDataToUserDB} />
-        <Login LogintoDB={this.LogintoDB} /> */}
-        <AddBook putDataToDB={this.putDataToDB} />
-        {/* <button onClick={this.deleteAll}>Delete All</button>
-        <button onClick={() => this.addAll(this.state.book)}>Add All</button>
-        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
-        <Footer /> */}
-      </React.Fragment>
+      <MyContext.Provider
+        value={{
+          state: this.state,
+          getDataFromDb: this.getDataFromDb,
+          loginformation: this.loginformation,
+          putDataToDB: this.putDataToDB,
+          putDataToUserDB: this.putDataToUserDB,
+          deleteByIdFromDB: this.deleteByIdFromDB,
+          updateDB: this.updateDB,
+          deleteAll: this.deleteAll,
+          addAll: this.addAll,
+          LogintoDB: this.LogintoDB,
+          updateData: this.updateData
+        }}
+      >
+        {this.props.children}
+      </MyContext.Provider>
     );
   }
 }
 
-export default App;
+export default MyData;
