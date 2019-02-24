@@ -19,6 +19,8 @@ class App extends Component {
     idToUpdate: null,
     objectToUpdate: null,
     content: null,
+    deleteByIdFromDB: null,
+    search: null,
     book: [
       {
         title: "Harry Potter",
@@ -51,7 +53,9 @@ class App extends Component {
               data={this.state.data}
               deleteByIdFromDB={this.deleteByIdFromDB}
             />
-          )
+          ),
+          deleteByIdFromDB: this.deleteByIdFromDB,
+          search: this.search
         });
       });
 
@@ -166,14 +170,25 @@ class App extends Component {
       });
   };
 
+  search = obj => {
+    axios
+      .post("http://localhost:3001/api/search", obj)
+      .then(res => {
+        this.setHome(
+          <Body data={res.data.data} deleteByIdFromDB={this.deleteByIdFromDB} />
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   updateData = datas => {
     this.setState({ data: datas });
   };
-  setHome = () => {
+  setHome = obj => {
     this.setState({
-      content: (
-        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
-      )
+      content: obj
     });
   };
   setLogin = () => {
@@ -184,6 +199,7 @@ class App extends Component {
       content: <Register putDataToUserDB={this.putDataToUserDB} />
     });
   };
+
   render() {
     return (
       <React.Fragment>
@@ -191,8 +207,16 @@ class App extends Component {
           setLogin={this.setLogin}
           setHome={this.setHome}
           setRegister={this.setRegister}
+          search={this.search}
+          state={this.state}
         />
-
+        <button
+          onClick={() => {
+            this.search({ title: "Harry Potter", course: "CSE442" });
+          }}
+        >
+          Test Search
+        </button>
         {this.state.content}
         {/* <Register putDataToUserDB={this.putDataToUserDB} />
         <Login LogintoDB={this.LogintoDB} /> */}

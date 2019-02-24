@@ -6,9 +6,10 @@ import { NavDropdown } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
+import Body from "./body";
 
 class Header extends Component {
-  state = {};
+  state = { input: null };
 
   render() {
     return (
@@ -20,7 +21,13 @@ class Header extends Component {
             <Nav.Link
               href="#home"
               onSelect={() => {
-                this.props.setHome();
+                console.log(this.props.state.funs);
+                this.props.setHome(
+                  <Body
+                    data={this.props.state.data}
+                    deleteByIdFromDB={this.props.state.deleteByIdFromDB}
+                  />
+                );
               }}
             >
               >Home
@@ -41,7 +48,22 @@ class Header extends Component {
             </NavDropdown>
           </Nav>
           <Form inline>
-            {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
+            <input
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2"
+              onChange={e => {
+                this.setState({ input: e.target.value });
+              }}
+            />
+            <Button
+              variant="outline-success"
+              onClick={() => {
+                this.props.search({ title: this.state.input });
+              }}
+            >
+              Search
+            </Button>
             <Button
               variant="outline-success"
               onClick={() => this.props.setLogin()}
