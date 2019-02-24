@@ -210,13 +210,6 @@ class App extends Component {
           search={this.search}
           state={this.state}
         />
-        <button
-          onClick={() => {
-            this.search({ title: "Harry Potter", course: "CSE442" });
-          }}
-        >
-          Test Search
-        </button>
         {this.state.content}
         {/* <Register putDataToUserDB={this.putDataToUserDB} />
         <Login LogintoDB={this.LogintoDB} /> */}
@@ -225,6 +218,7 @@ class App extends Component {
         <button onClick={() => this.addAll(this.state.book)}>Add All</button>
         <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
         <Footer /> */}
+        <Footer />
       </React.Fragment>
     );
   }
