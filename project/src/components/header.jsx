@@ -1,37 +1,62 @@
 import React, { Component } from "react";
 import StickyHeader from "react-headroom";
+import { Navbar } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 class Header extends Component {
   state = {};
 
   render() {
     return (
-      <React.Fragment>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <a className="navbar-brand" href="#">
-            UB Book Platform
-          </a>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav">
-              <a className="nav-item nav-link active" href="#">
-                Home <span className="sr-only">(current)</span>
-              </a>
-              <a className="nav-item nav-link" href="#">
-                Features
-              </a>
-              <a className="nav-item nav-link" href="#">
-                Report
-              </a>
-            </div>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+      <Navbar bg="light" expand="lg" style={{ marginBottom: 10 }}>
+        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link
+              href="#home"
+              onSelect={() => {
+                this.props.setHome();
+              }}
+            >
+              >Home
+            </Nav.Link>
+            <Nav.Link href="#accountPage" onSelect={() => {}}>
+              Account
+            </Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+          <Form inline>
+            {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
+            <Button
+              variant="outline-success"
+              onClick={() => this.props.setLogin()}
+            >
               Login
-            </button>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            </Button>
+            <Button
+              variant="outline-success"
+              onClick={() => this.props.setRegister()}
+            >
               Register
-            </button>
-          </div>
-        </nav>
-      </React.Fragment>
+            </Button>
+          </Form>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }

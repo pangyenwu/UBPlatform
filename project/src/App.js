@@ -37,21 +37,24 @@ class App extends Component {
     ]
   };
 
-  componentWillMount() {
-    this.getDataFromDb();
-    this.setState({
-      content: (
-        <Body state={this.state} deleteByIdFromDB={this.deleteByIdFromDB} />
-      )
-    });
-    console.log(this.state.data);
-  }
-
   // when component mounts, first thing it does is fetch all existing data in our db
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
   componentDidMount() {
-    this.getDataFromDb();
+    fetch("http://localhost:3001/api/getData")
+      .then(data => data.json())
+      .then(res => this.setState({ data: res.data }))
+      .then(result => {
+        this.setState({
+          content: (
+            <Body
+              data={this.state.data}
+              deleteByIdFromDB={this.deleteByIdFromDB}
+            />
+          )
+        });
+      });
+
     if (!this.state.intervalIsSet) {
       let interval = setInterval(this.getDataFromDb, 1000);
       this.setState({ intervalIsSet: interval });
@@ -166,22 +169,38 @@ class App extends Component {
   updateData = datas => {
     this.setState({ data: datas });
   };
-
+  setHome = () => {
+    this.setState({
+      content: (
+        <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
+      )
+    });
+  };
+  setLogin = () => {
+    this.setState({ content: <Login LogintoDB={this.LogintoDB} /> });
+  };
+  setRegister = () => {
+    this.setState({
+      content: <Register putDataToUserDB={this.putDataToUserDB} />
+    });
+  };
   render() {
     return (
       <React.Fragment>
-        <Header />
-        {/* <Content state={this.state} /> */}
-        {/* {console.log(this.state.data)} */}
+        <Header
+          setLogin={this.setLogin}
+          setHome={this.setHome}
+          setRegister={this.setRegister}
+        />
 
-        {/* {this.state.content} */}
-        <Register putDataToUserDB={this.putDataToUserDB} />
-        <Login LogintoDB={this.LogintoDB} />
+        {this.state.content}
+        {/* <Register putDataToUserDB={this.putDataToUserDB} />
+        <Login LogintoDB={this.LogintoDB} /> */}
         <AddBook putDataToDB={this.putDataToDB} />
-        <button onClick={this.deleteAll}>Delete All</button>
+        {/* <button onClick={this.deleteAll}>Delete All</button>
         <button onClick={() => this.addAll(this.state.book)}>Add All</button>
         <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
-        <Footer />
+        <Footer /> */}
       </React.Fragment>
     );
   }
