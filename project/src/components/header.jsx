@@ -6,6 +6,7 @@ import { NavDropdown } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
+import AccountPage from "./accountPage";
 
 class Header extends Component {
   state = {};
@@ -25,7 +26,18 @@ class Header extends Component {
             >
               >Home
             </Nav.Link>
-            <Nav.Link href="#accountPage" onSelect={() => {}}>
+            <Nav.Link
+              href="#accountPage"
+              onSelect={() => {
+                console.log(this.props.state.user);
+                this.props.setAccountPage(
+                  <AccountPage
+                    user={this.props.state.user}
+                    putDatatoDB={this.putDatatoDB}
+                  />
+                );
+              }}
+            >
               Account
             </Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">

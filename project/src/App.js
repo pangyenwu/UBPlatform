@@ -9,6 +9,7 @@ import Footer from "./components/footer";
 import axios from "axios";
 import AddBook from "./components/addBook";
 import Content from "./components/content";
+import AccountPage from "./components/accountPage";
 
 class App extends Component {
   // initialize our state
@@ -19,6 +20,7 @@ class App extends Component {
     idToUpdate: null,
     objectToUpdate: null,
     content: null,
+    user: null,
     book: [
       {
         title: "Harry Potter",
@@ -159,7 +161,8 @@ class App extends Component {
     axios
       .post("http://localhost:3001/api/login", json)
       .then(res => {
-        console.log(res);
+        this.setState({ user: res.data.user });
+        console.log(res.data.user);
       })
       .catch(err => {
         console.log(err);
@@ -184,19 +187,24 @@ class App extends Component {
       content: <Register putDataToUserDB={this.putDataToUserDB} />
     });
   };
+  setAccountPage = object => {
+    this.setState({ content: object });
+  };
   render() {
     return (
       <React.Fragment>
         <Header
+          state={this.state}
           setLogin={this.setLogin}
           setHome={this.setHome}
           setRegister={this.setRegister}
+          setAccountPage={this.setAccountPage}
+          putDataToDB={this.putDataToDB}
         />
 
         {this.state.content}
         {/* <Register putDataToUserDB={this.putDataToUserDB} />
         <Login LogintoDB={this.LogintoDB} /> */}
-        <AddBook putDataToDB={this.putDataToDB} />
         {/* <button onClick={this.deleteAll}>Delete All</button>
         <button onClick={() => this.addAll(this.state.book)}>Add All</button>
         <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
