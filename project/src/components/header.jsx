@@ -35,19 +35,36 @@ class Header extends Component {
             <Nav.Link href="#accountPage" onSelect={() => {}}>
               Account
             </Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Form inline>
+            <NavDropdown title="Filter" id="basic-nav-dropdown">
+              <NavDropdown.Item
+                href="#action/3.1"
+                onClick={() => {
+                  this.props.search({ course: "CSE" });
+                }}
+              >
+                CSE
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                href="#action/3.2"
+                onClick={() => {
+                  this.props.search({ course: "ENGLISH" });
+                }}
+              >
+                English
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                href="#action/3.3"
+                onClick={() => {
+                  this.props.search({ course: "HISTORY" });
+                }}
+              >
+                History
+              </NavDropdown.Item>
+              {/* <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">Test</NavDropdown.Item> */}
+            </NavDropdown>
             <input
               type="text"
               placeholder="Search"
