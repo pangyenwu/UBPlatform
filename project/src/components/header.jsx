@@ -8,9 +8,40 @@ import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
 import AccountPage from "./accountPage";
 import Body from "./body";
+import Login from "./login";
+import Register from "./register";
+import axios from "axios";
+import BookCardInfo from "./bookCardInfo";
 
 class Header extends Component {
-  state = { input: null };
+  state = { input: null, user: null };
+
+  login = users => {
+    if (users == null) {
+      this.props.setContent(<h1>You Need to Login First!</h1>);
+      return 0;
+    }
+    this.setState({ user: users });
+    this.props.setContent(<AccountPage user={users} />);
+    return 1;
+  };
+
+  search = obj => {
+    axios
+      .post("http://localhost:3001/api/search", obj)
+      .then(res => {
+        this.props.setContent(
+          <React.Fragment>
+            {res.data.data.map(book => (
+              <BookCardInfo key={book._id} bookInfo={book} />
+            ))}
+          </React.Fragment>
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   render() {
     return (
@@ -22,13 +53,7 @@ class Header extends Component {
             <Nav.Link
               href="#home"
               onSelect={() => {
-                console.log(this.props.state.funs);
-                this.props.setHome(
-                  <Body
-                    data={this.props.state.data}
-                    deleteByIdFromDB={this.props.state.deleteByIdFromDB}
-                  />
-                );
+                this.props.setContent(<Body />);
               }}
             >
               >Home
@@ -36,8 +61,7 @@ class Header extends Component {
             <Nav.Link
               href="#accountPage"
               onSelect={() => {
-                console.log(this.props.state.user);
-                this.props.setAccountPage();
+                this.login(this.state.user);
               }}
             >
               Account
@@ -48,7 +72,7 @@ class Header extends Component {
               <NavDropdown.Item
                 href="#action/3.1"
                 onClick={() => {
-                  this.props.search({ course: "CSE" });
+                  this.search({ course: "CSE" });
                 }}
               >
                 CSE
@@ -56,7 +80,7 @@ class Header extends Component {
               <NavDropdown.Item
                 href="#action/3.2"
                 onClick={() => {
-                  this.props.search({ course: "ENGLISH" });
+                  this.search({ course: "ENGLISH" });
                 }}
               >
                 English
@@ -64,7 +88,7 @@ class Header extends Component {
               <NavDropdown.Item
                 href="#action/3.3"
                 onClick={() => {
-                  this.props.search({ course: "HISTORY" });
+                  this.search({ course: "HISTORY" });
                 }}
               >
                 History
@@ -83,20 +107,22 @@ class Header extends Component {
             <Button
               variant="outline-success"
               onClick={() => {
-                this.props.search({ title: this.state.input });
+                this.search({ title: this.state.input });
               }}
             >
               Search
             </Button>
             <Button
               variant="outline-success"
-              onClick={() => this.props.setLogin()}
+              onClick={() =>
+                this.props.setContent(<Login login={this.login} />)
+              }
             >
               Login
             </Button>
             <Button
               variant="outline-success"
-              onClick={() => this.props.setRegister()}
+              onClick={() => this.props.setContent(<Register />)}
             >
               Register
             </Button>

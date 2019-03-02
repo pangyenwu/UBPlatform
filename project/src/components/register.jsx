@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { RegisterWrapper, RegisterBox, Input, Button } from "./registerStyle";
+import axios from "axios";
+
 class Register extends Component {
   state = {
     username: null,
@@ -7,6 +9,17 @@ class Register extends Component {
     firstname: null,
     lastname: null,
     password: null
+  };
+
+  putDataToUserDB = json => {
+    axios
+      .post("http://localhost:3001/api/putUser", json)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -57,7 +70,7 @@ class Register extends Component {
             </label>
             <Button
               onClick={() =>
-                this.props.putDataToUserDB({
+                this.putDataToUserDB({
                   username: this.state.username,
                   email: this.state.email,
                   firstname: this.state.firstname,

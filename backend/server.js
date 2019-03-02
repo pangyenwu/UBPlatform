@@ -19,7 +19,7 @@ const whitelist = [
 ];
 var corsOptions = {
   origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (origin == undefined || whitelist.indexOf(origin) != -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -116,7 +116,7 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/search", (req, res) => {
-  Data.find(req.body, function(err, data) {
+  Data.find(req.body, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });

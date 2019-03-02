@@ -1,25 +1,15 @@
 import React, { Component } from "react";
 import AddBook from "./addBook";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-import { access } from "fs";
-import Body from "./body";
-class AccountPage extends Component {
-  render() {
-    const data = [
-      {
-        name: this.props.user.firstname,
-        email: this.props.user.email
-      }
-    ];
-    // const bookData = [
-    //   {
-    //     title: this.props.user.firstname,
-    //     price: this.props.user.email
-    //   }
-    // ];
+import BookCardInfo from "./bookCardInfo";
+import axios from "axios";
 
-    const userInfo = [
+class AccountPage extends Component {
+  state = {
+    name: this.props.user.firstname,
+    email: this.props.user.email,
+    currentSellingBook: [],
+    intervalIsSet: null,
+    userInfo: [
       {
         Header: "Username",
         accessor: "name"
@@ -28,23 +18,45 @@ class AccountPage extends Component {
         Header: "Email",
         accessor: "email"
       }
-    ];
+    ]
+  };
 
-    // const currentBook = [
-    //   {
-    //     Header: "Title",
-    //     accessor: "title"
-    //   },
-    //   {
-    //     Header: "Price",
-    //     accessor: "price"
-    //   },
-    //   {
-    //     Header: "Course",
-    //     accessor: "course"
-    //   }
-    // ];
+  // when component mounts, first thing it does is fetch all existing data in our db
+  // then we incorporate a polling logic so that we can easily see if our db has
+  // changed and implement those changes into our UI
+  componentDidMount() {
+    this.getMyCurrentSellingBook();
 
+    if (!this.state.intervalIsSet) {
+      let interval = setInterval(this.getMyCurrentSellingBook, 1000);
+      this.setState({ intervalIsSet: interval });
+    }
+  }
+
+  // never let a process live forever
+  // always kill a process everytime we are done using it
+  componentWillUnmount() {
+    if (this.state.intervalIsSet) {
+      clearInterval(this.state.intervalIsSet);
+      this.setState({ intervalIsSet: null });
+    }
+  }
+
+  //new function for getting current selling book
+  getMyCurrentSellingBook = () => {
+    axios
+      .post("http://localhost:3001/api/search", {
+        owner: this.props.user.username
+      })
+      .then(res => {
+        this.setState({ currentSellingBook: res.data.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  render() {
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>
@@ -67,21 +79,13 @@ class AccountPage extends Component {
           Here is the book you are currently selling
         </h2>
 
-        <Body
-          data={this.props.currentSellingBook}
-          deleteByIdFromDB={this.props.deleteByIdFromDB}
-        />
-        {/* <ReactTable
-          data={bookData}
-          columns={currentBook}
-          defaultPageSize={3}
-          pageSizeOptions={[3, 6]}
-        /> */}
+        <div>
+          {this.state.currentSellingBook.map(book => (
+            <BookCardInfo key={book._id} bookInfo={book} />
+          ))}
+        </div>
 
-        <AddBook
-          username={this.props.user.username}
-          putDataToDB={this.props.putDataToDB}
-        />
+        <AddBook username={this.props.user.username} />
       </React.Fragment>
     );
   }

@@ -1,12 +1,24 @@
 import React, { Component } from "react";
-import { MyContext } from "./myData";
+import axios from "axios";
 
 class AddBook extends Component {
   state = { title: null, price: null, course: null, url: null, owner: null };
 
-  // setOwner = () => {
-  //   this.setState({ owner: this.props.username });
-  // };
+  // our put method that uses our backend api
+  // to create new query into our data base
+  // # json = json object
+  putDataToDB = json => {
+    axios
+      .post("http://localhost:3001/api/putData", json)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     return (
       <div style={{ padding: "10px", display: "grid" }}>
@@ -53,7 +65,7 @@ class AddBook extends Component {
           style={{ width: "200px" }}
           onClick={() => {
             // this.props.setAccount();
-            this.props.putDataToDB({
+            this.putDataToDB({
               title: this.state.title,
               price: this.state.price,
               course: this.state.course,

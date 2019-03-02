@@ -1,8 +1,24 @@
 import React, { Component } from "react";
 import { LoginWrapper, LoginBox, Input, Button } from "./loginStyle";
+import axios from "axios";
 
 class login extends Component {
   state = { username: null, password: null };
+
+  LogintoDB = json => {
+    axios
+      .post("http://localhost:3001/api/login", json)
+      .then(res => {
+        if (res.data.user == null) {
+          console.log({ success: false, message: "user not found." });
+          return 0;
+        }
+        this.props.login(res.data.user);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   render() {
     return (
@@ -27,7 +43,7 @@ class login extends Component {
             </label>
             <Button
               onClick={() =>
-                this.props.LogintoDB({
+                this.LogintoDB({
                   username: this.state.username,
                   password: this.state.password
                 })
