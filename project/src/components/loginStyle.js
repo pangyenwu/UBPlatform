@@ -4,22 +4,24 @@ export const LoginWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: #eee;
 `;
 
 export const LoginBox = styled.div`
   width: 320px;
-  height: 300px;
-  background: #1e90ff;
+  height: 370px;
+  background: radial-gradient(
+    ellipse farthest-corner at center top,
+    #1e90ff 0%,
+    #a9bcd0 100%
+  );
   padding: 50px 30px;
   color: white;
-  margin: 100 auto;
-  margin-top: 0px;
-  top: 50%;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
   box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 7px;
 `;
 
 export const Input = styled.input`
@@ -33,7 +35,7 @@ export const Input = styled.input`
   margin-bottom: 10px;
 `;
 
-export const Button = styled.div`
+export const Button = styled.button`
   width: 220px;
   height: 30px;
   line-height: 30px;

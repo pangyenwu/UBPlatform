@@ -25,6 +25,7 @@ class login extends Component {
       <React.Fragment>
         <LoginWrapper>
           <LoginBox>
+            <h1>Login Page</h1>
             <label>
               Username:
               <Input

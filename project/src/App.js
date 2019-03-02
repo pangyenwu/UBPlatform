@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Body from "./components/body";
-import Register from "./components/register";
-import Login from "./components/login";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import axios from "axios";
-import AddBook from "./components/addBook";
-import Content from "./components/content";
-import AccountPage from "./components/accountPage";
-import { Alert } from "react-bootstrap";
 
 class App extends Component {
   // initialize our state
