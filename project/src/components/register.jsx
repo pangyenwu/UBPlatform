@@ -15,6 +15,8 @@ class Register extends Component {
     axios
       .post("http://localhost:3001/api/putUser", json)
       .then(res => {
+        if (res.data.success) alert("Register Successfully");
+        else alert("User already exist.");
         console.log(res);
       })
       .catch(err => {

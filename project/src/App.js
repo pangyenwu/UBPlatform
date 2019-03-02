@@ -53,12 +53,12 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div style={{ backgroundColor: "#D8D8D8" }}>
         <Header setContent={this.setContent} />
         {/* <button onClick={this.deleteAll}>Delete All Book</button> */}
         {this.state.content}
         <Footer />
-      </React.Fragment>
+      </div>
     );
   }
 }

@@ -20,13 +20,15 @@ class Header extends Component {
     this.setTopRight(
       <React.Fragment>
         <Button
-          variant="outline-success"
+           style={{ margin: "5px" }}
+                variant="outline-primary"
           onClick={() => this.props.setContent(<Login login={this.login} />)}
         >
           Login
         </Button>
         <Button
-          variant="outline-success"
+           style={{ margin: "5px" }}
+                variant="outline-primary"
           onClick={() => this.props.setContent(<Register />)}
         >
           Register
@@ -49,7 +51,8 @@ class Header extends Component {
     this.setState({ user: users });
     this.props.setContent(<AccountPage user={users} />);
     this.setTopRight(
-      <Button variant="outline-success" onClick={() => this.signOut()}>
+      <Button  style={{ margin: "5px" }}
+                variant="outline-primary" onClick={() => this.signOut()}>
         Sign Out
       </Button>
     );
@@ -62,13 +65,15 @@ class Header extends Component {
     this.setTopRight(
       <React.Fragment>
         <Button
-          variant="outline-success"
+          style={{ margin: "5px" }}
+                variant="outline-primary"
           onClick={() => this.props.setContent(<Login login={this.login} />)}
         >
           Login
         </Button>
         <Button
-          variant="outline-success"
+           style={{ margin: "5px" }}
+                variant="outline-primary"
           onClick={() => this.props.setContent(<Register />)}
         >
           Register
@@ -96,9 +101,16 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar bg="light" expand="lg" style={{ marginBottom: 10 }}>
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar bg="navbar navbar-dark bg-dark" expand="lg" style={{ marginBottom: 10 }}>
+<Navbar.Brand href="#home">
+          UB Platform
+          <img
+            src="https://img.icons8.com/doodle/48/000000/books.png"
+            style={{ width: 30 }}
+          />
+        </Navbar.Brand> 
+
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link
@@ -156,7 +168,8 @@ class Header extends Component {
               }}
             />
             <Button
-              variant="outline-success"
+               style={{ margin: "5px" }}
+                variant="outline-primary"
               onClick={() => {
                 this.search({ title: this.state.input });
               }}
