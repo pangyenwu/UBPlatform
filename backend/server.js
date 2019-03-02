@@ -89,20 +89,55 @@ router.post("/putData", (req, res) => {
   });
 });
 
+router.post("/isUserExist", (req, res) => {
+  User.findOne({ username: req.body.username }, (err, user) => {
+    if (err) return res.json({ error: err });
+    if (user != null) return res.json({ message: "User Already Exist." });
+    return res.json({ message: "User don't exist." });
+  });
+});
+
 //test
 // this method adds new data in our database
 router.post("/putUser", (req, res) => {
-  let user = new User();
-  const { username, email, password, firstname, lastname } = req.body;
-  user.username = username;
-  user.email = email;
-  user.firstname = firstname;
-  user.lastname = lastname;
-  user.password = password;
-  user.save(err => {
+  User.findOne({ username: req.body.username }, (err, users) => {
     if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
+    if (users != null)
+      return res.json({ success: false, message: "User already exist" });
+
+    let user = new User();
+    const { username, email, password, firstname, lastname } = req.body;
+    user.username = username;
+    user.email = email;
+    user.firstname = firstname;
+    user.lastname = lastname;
+    user.password = password;
+    user.save(err => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, message: "User Register" });
+    });
   });
+});
+
+router.post("/unregister", (req, res) => {
+  User.findOne(
+    { username: req.body.username, password: req.body.password },
+    (err, user) => {
+      if (err) return res.json({ success: false, error: err });
+      if (user == null)
+        return res.json({ success: false, message: "user not found." });
+      Data.find({ owner: user.username }, (err, data) => {
+        if (err) return res.json({ success: false, error: err });
+        data.map(book => {
+          Data.findByIdAndDelete(book._id, (err, res) => {
+            if (err)
+              return res.json({ success: false, message: "unable to delete" });
+          });
+        });
+        return res.json({ success: true, message: "delete all books." });
+      });
+    }
+  );
 });
 
 router.post("/login", (req, res) => {
@@ -110,6 +145,8 @@ router.post("/login", (req, res) => {
     { username: req.body.username, password: req.body.password },
     function(err, user) {
       if (err) return res.json({ success: false, error: err });
+      if (user == null)
+        return res.json({ success: false, message: "User Don't Exist." });
       return res.json({ success: true, user: user });
     }
   );

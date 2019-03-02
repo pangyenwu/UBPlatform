@@ -14,16 +14,67 @@ import axios from "axios";
 import BookCardInfo from "./bookCardInfo";
 
 class Header extends Component {
-  state = { input: null, user: null };
+  state = { input: null, user: null, topRight: null };
+
+  componentDidMount() {
+    this.setTopRight(
+      <React.Fragment>
+        <Button
+          variant="outline-success"
+          onClick={() => this.props.setContent(<Login login={this.login} />)}
+        >
+          Login
+        </Button>
+        <Button
+          variant="outline-success"
+          onClick={() => this.props.setContent(<Register />)}
+        >
+          Register
+        </Button>
+      </React.Fragment>
+    );
+  }
+
+  setTopRight = content => {
+    this.setState({
+      topRight: content
+    });
+  };
 
   login = users => {
     if (users == null) {
-      this.props.setContent(<h1>You Need to Login First!</h1>);
+      this.props.setContent(<Login login={this.login} />);
       return 0;
     }
     this.setState({ user: users });
     this.props.setContent(<AccountPage user={users} />);
+    this.setTopRight(
+      <Button variant="outline-success" onClick={() => this.signOut()}>
+        Sign Out
+      </Button>
+    );
     return 1;
+  };
+
+  signOut = () => {
+    this.props.setContent(<Body />);
+    this.setState({ user: null });
+    this.setTopRight(
+      <React.Fragment>
+        <Button
+          variant="outline-success"
+          onClick={() => this.props.setContent(<Login login={this.login} />)}
+        >
+          Login
+        </Button>
+        <Button
+          variant="outline-success"
+          onClick={() => this.props.setContent(<Register />)}
+        >
+          Register
+        </Button>
+      </React.Fragment>
+    );
   };
 
   search = obj => {
@@ -112,20 +163,7 @@ class Header extends Component {
             >
               Search
             </Button>
-            <Button
-              variant="outline-success"
-              onClick={() =>
-                this.props.setContent(<Login login={this.login} />)
-              }
-            >
-              Login
-            </Button>
-            <Button
-              variant="outline-success"
-              onClick={() => this.props.setContent(<Register />)}
-            >
-              Register
-            </Button>
+            {this.state.topRight}
           </Form>
         </Navbar.Collapse>
       </Navbar>

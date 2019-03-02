@@ -55,6 +55,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header setContent={this.setContent} />
+        {/* <button onClick={this.deleteAll}>Delete All Book</button> */}
         {this.state.content}
         <Footer />
       </React.Fragment>
