@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { MyContext } from "./myData";
 
 class AddBook extends Component {
-  state = { title: null, price: null, course: null, url: null };
+  state = { title: null, price: null, course: null, url: null, owner: null };
 
+  // setOwner = () => {
+  //   this.setState({ owner: this.props.username });
+  // };
   render() {
     return (
       <div style={{ padding: "10px", display: "grid" }}>
@@ -46,15 +49,16 @@ class AddBook extends Component {
             style={{ width: "200px" }}
           />
         </label>
-
         <button
           style={{ width: "200px" }}
           onClick={() => {
+            // this.props.setAccount();
             this.props.putDataToDB({
               title: this.state.title,
               price: this.state.price,
               course: this.state.course,
-              url: this.state.url
+              url: this.state.url,
+              owner: this.props.username
             });
           }}
         >

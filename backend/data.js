@@ -7,7 +7,8 @@ const DataSchema = new Schema({
   title: String,
   price: String,
   course: String,
-  url: String
+  url: String,
+  owner: String
 });
 
 // export the new Schema so we could modify it using Node.js

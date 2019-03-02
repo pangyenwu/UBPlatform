@@ -6,6 +6,7 @@ import { NavDropdown } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { FormControl } from "react-bootstrap";
+import AccountPage from "./accountPage";
 import Body from "./body";
 
 class Header extends Component {
@@ -32,7 +33,13 @@ class Header extends Component {
             >
               >Home
             </Nav.Link>
-            <Nav.Link href="#accountPage" onSelect={() => {}}>
+            <Nav.Link
+              href="#accountPage"
+              onSelect={() => {
+                console.log(this.props.state.user);
+                this.props.setAccountPage();
+              }}
+            >
               Account
             </Nav.Link>
           </Nav>

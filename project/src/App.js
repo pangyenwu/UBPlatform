@@ -9,6 +9,8 @@ import Footer from "./components/footer";
 import axios from "axios";
 import AddBook from "./components/addBook";
 import Content from "./components/content";
+import AccountPage from "./components/accountPage";
+import { Alert } from "react-bootstrap";
 
 class App extends Component {
   // initialize our state
@@ -19,6 +21,8 @@ class App extends Component {
     idToUpdate: null,
     objectToUpdate: null,
     content: null,
+    user: null,
+    currentSellingBook: [],
     deleteByIdFromDB: null,
     search: null,
     book: [
@@ -163,7 +167,8 @@ class App extends Component {
     axios
       .post("http://localhost:3001/api/login", json)
       .then(res => {
-        console.log(res);
+        this.setState({ user: res.data.user });
+        this.setAccountPage();
       })
       .catch(err => {
         console.log(err);
@@ -200,20 +205,59 @@ class App extends Component {
     });
   };
 
+  setAccountPage = () => {
+    if (this.state.user == null) {
+      return console.log("login first");
+    }
+    this.getMyCurrentSellingBook({ owner: this.state.user.username });
+  };
+
+  //new function for getting current selling book
+  getMyCurrentSellingBook = obj => {
+    axios
+      .post("http://localhost:3001/api/search", obj)
+      .then(res => {
+        this.setState({ currentSellingBook: res.data.data });
+
+        this.setState({
+          content: (
+            <AccountPage
+              user={this.state.user}
+              putDataToDB={this.putDataToDB}
+              currentSellingBook={res.data.data}
+              deleteByIdFromDB={this.state.deleteByIdFromDB}
+            />
+          )
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+
   render() {
     return (
       <React.Fragment>
         <Header
+          state={this.state}
           setLogin={this.setLogin}
           setHome={this.setHome}
           setRegister={this.setRegister}
+          setAccountPage={this.setAccountPage}
+          putDataToDB={this.putDataToDB}
           search={this.search}
           state={this.state}
+
         />
         {this.state.content}
+
+        <button onClick={() => this.getMyCurrentSellingBook({ owner: "Ying" })}>
+          test
+        </button>
+
         {/* <Register putDataToUserDB={this.putDataToUserDB} />
         <Login LogintoDB={this.LogintoDB} /> */}
-        <AddBook putDataToDB={this.putDataToDB} />
         {/* <button onClick={this.deleteAll}>Delete All</button>
         <button onClick={() => this.addAll(this.state.book)}>Add All</button>
         <Body data={this.state.data} deleteByIdFromDB={this.deleteByIdFromDB} />
