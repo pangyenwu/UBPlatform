@@ -29,7 +29,7 @@ class Header extends Component {
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register />)}
+          onClick={() => this.props.setContent(<Register login={this.login} />)}
         >
           Register
         </Button>
@@ -77,7 +77,7 @@ class Header extends Component {
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register />)}
+          onClick={() => this.props.setContent(<Register login={this.login} />)}
         >
           Register
         </Button>
