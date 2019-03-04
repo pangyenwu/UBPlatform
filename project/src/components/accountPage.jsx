@@ -60,18 +60,16 @@ class AccountPage extends Component {
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>
-          Welcome {this.props.user.firstname + this.props.user.lastname}
+          Welcome {this.props.user.firstname + " " + this.props.user.lastname}
         </h1>
         <table style={{ textAlign: "center" }}>
           <tr>
             <th>Your username</th>
             <th>Your account email</th>
-            <th>Your ID</th>
           </tr>
           <tr>
             <td>{this.props.user.username}</td>
             <td>{this.props.user.email}</td>
-            <td>{this.props.user._id}</td>
           </tr>
         </table>
         <hr />
