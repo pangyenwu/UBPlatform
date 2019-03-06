@@ -17,13 +17,7 @@ class Register extends Component {
       .then(res => {
         if (res.data.success) {
           alert("Register Successfully");
-          this.props.login({
-            username: this.state.username,
-            email: this.email,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            password: this.state.password
-          });
+          this.props.login(json);
         } else alert("User already exist.");
         console.log(res);
       })
