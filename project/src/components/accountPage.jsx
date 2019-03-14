@@ -45,7 +45,7 @@ class AccountPage extends Component {
   //new function for getting current selling book
   getMyCurrentSellingBook = () => {
     axios
-      .post("http://localhost:3001/api/search", {
+      .post(this.props.api+"/search", {
         owner: this.props.user.username
       })
       .then(res => {
@@ -79,11 +79,11 @@ class AccountPage extends Component {
 
         <div>
           {this.state.currentSellingBook.map(book => (
-            <BookCardInfo key={book._id} bookInfo={book} />
+            <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
           ))}
         </div>
 
-        <AddBook username={this.props.user.username} />
+        <AddBook username={this.props.user.username} api={this.props.api} />
       </React.Fragment>
     );
   }

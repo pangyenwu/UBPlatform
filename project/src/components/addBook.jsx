@@ -9,7 +9,7 @@ class AddBook extends Component {
   // # json = json object
   putDataToDB = json => {
     axios
-      .post("http://localhost:3001/api/putData", json)
+      .post(this.props.api + "/putData", json)
       .then(res => {
         console.log(res);
         console.log(res.data);

@@ -33,7 +33,7 @@ class Body extends Component {
   // fetch data from our data base
   // # see this.state.data
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch(this.props.api+"/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
@@ -41,7 +41,7 @@ class Body extends Component {
   // to remove existing database information
   // # idTodelete = _id from database
   deleteByIdFromDB = idTodelete => {
-    axios.delete("http://localhost:3001/api/deleteByIdData", {
+    axios.delete(this.props.api+"/deleteByIdData", {
       data: { id: idTodelete }
     });
   };
@@ -50,7 +50,7 @@ class Body extends Component {
     return (
       <div>
         {this.state.data.map(book => (
-          <BookCardInfo key={book._id} bookInfo={book} />
+          <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
         ))}
       </div>
     );

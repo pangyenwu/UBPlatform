@@ -22,14 +22,14 @@ class Header extends Component {
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login login={this.login} />)}
+          onClick={() => this.props.setContent(<Login login={this.login} api={this.props.api}/>)}
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} />)}
+          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
         >
           Register
         </Button>
@@ -45,11 +45,11 @@ class Header extends Component {
 
   login = users => {
     if (users == null) {
-      this.props.setContent(<Login login={this.login} />);
+      this.props.setContent(<Login login={this.login} api={this.props.api}/>);
       return 0;
     }
     this.setState({ user: users });
-    this.props.setContent(<AccountPage user={users} />);
+    this.props.setContent(<AccountPage user={users} api={this.props.api}/>);
     this.setTopRight(
       <Button
         style={{ margin: "5px" }}
@@ -63,21 +63,21 @@ class Header extends Component {
   };
 
   signOut = () => {
-    this.props.setContent(<Body />);
+    this.props.setContent(<Body api={this.props.api}/>);
     this.setState({ user: null });
     this.setTopRight(
       <React.Fragment>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login login={this.login} />)}
+          onClick={() => this.props.setContent(<Login login={this.login} api={this.props.api}/>)}
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} />)}
+          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
         >
           Register
         </Button>
@@ -87,12 +87,12 @@ class Header extends Component {
 
   search = obj => {
     axios
-      .post("http://localhost:3001/api/search", obj)
+      .post(this.props.api+"/search", obj)
       .then(res => {
         this.props.setContent(
           <React.Fragment>
             {res.data.data.map(book => (
-              <BookCardInfo key={book._id} bookInfo={book} />
+              <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
             ))}
           </React.Fragment>
         );
@@ -123,7 +123,7 @@ class Header extends Component {
             <Nav.Link
               href="#home"
               onSelect={() => {
-                this.props.setContent(<Body />);
+                this.props.setContent(<Body api={this.props.api}/>);
               }}
             >
               >Home

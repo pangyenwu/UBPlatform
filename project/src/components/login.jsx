@@ -7,7 +7,7 @@ class login extends Component {
 
   LogintoDB = json => {
     axios
-      .post("http://localhost:3001/api/login", json)
+      .post(this.props.api +"/login", json)
       .then(res => {
         if (res.data.user == null) {
           console.log({ success: false, message: "user not found." });
