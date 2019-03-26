@@ -85,22 +85,22 @@ class Header extends Component {
     );
   };
 
-  search = obj => {
-    axios
-      .post(this.props.api+"/search", obj)
-      .then(res => {
-        this.props.setContent(
-          <React.Fragment>
-            {res.data.data.map(book => (
-              <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
-            ))}
-          </React.Fragment>
-        );
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  // search = obj => {
+  //   axios
+  //     .post(this.props.api+"/search", obj)
+  //     .then(res => {
+  //       this.props.setContent(
+  //         <React.Fragment>
+  //           {res.data.data.map(book => (
+  //             <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
+  //           ))}
+  //         </React.Fragment>
+  //       );
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
   render() {
     return (
@@ -138,51 +138,6 @@ class Header extends Component {
             </Nav.Link>
           </Nav>
           <Form inline>
-            <NavDropdown title="Filter" id="basic-nav-dropdown">
-              <NavDropdown.Item
-                href="#action/3.1"
-                onClick={() => {
-                  this.search({ course: "CSE" });
-                }}
-              >
-                CSE
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href="#action/3.2"
-                onClick={() => {
-                  this.search({ course: "English" });
-                }}
-              >
-                English
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href="#action/3.3"
-                onClick={() => {
-                  this.search({ course: "History" });
-                }}
-              >
-                History
-              </NavDropdown.Item>
-              {/* <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Test</NavDropdown.Item> */}
-            </NavDropdown>
-            <input
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-              onChange={e => {
-                this.setState({ input: e.target.value });
-              }}
-            />
-            <Button
-              style={{ margin: "5px" }}
-              variant="outline-primary"
-              onClick={() => {
-                this.search({ title: this.state.input });
-              }}
-            >
-              Search
-            </Button>
             {this.state.topRight}
           </Form>
         </Navbar.Collapse>
