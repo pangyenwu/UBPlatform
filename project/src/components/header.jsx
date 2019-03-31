@@ -49,7 +49,7 @@ class Header extends Component {
       return 0;
     }
     this.setState({ user: users });
-    this.props.setContent(<AccountPage user={users} api={this.props.api}/>);
+    this.props.setContent(<AccountPage user={users} api={this.props.api} signOut={this.signOut}/>);
     this.setTopRight(
       <Button
         style={{ margin: "5px" }}

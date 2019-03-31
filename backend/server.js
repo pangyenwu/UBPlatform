@@ -158,6 +158,22 @@ router.post("/login", (req, res) => {
   );
 });
 
+router.post("/changePassword", (req, res)=>{
+  User.findOne({username: req.body.username}, (err, user)=>{
+    if (err) return res.json({ success: false, error: err });
+    if (user == null)
+      return res.json({ success: false, message: "User don't exist." });
+    if (user.password == passwordHashing(req.body.password, user.salt)){
+      var salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      var password = passwordHashing(req.body.newPassword, salt);
+      User.findOneAndUpdate({username: user.username, password: user.password}, {password: password, salt: salt}, (err)=>{
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true });
+      })
+    }
+  })
+});
+
 router.post("/search", (req, res) => {
   Data.find(req.body, (err, data) => {
     if (err) return res.json({ success: false, error: err });
