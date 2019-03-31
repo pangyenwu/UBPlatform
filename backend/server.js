@@ -8,8 +8,19 @@ const User = require("./user");
 const { ObjectId } = require("mongodb");
 const mongodb = require("mongodb");
 const sha256 = require("js-sha256").sha256;
+const nodemailer = require('nodemailer');
 const API_PORT = 3001;
 const app = express();
+
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'platformtest147@gmail.com',
+    pass: 'CSE442@platformmail'
+  }
+});
 
 //setup whitelist for http request
 //When upoad to server, make sure this is live and prevent un indentify request
@@ -153,7 +164,8 @@ router.post("/login", (req, res) => {
           email: user.email,
           firstname: user.firstname,
           lastname: user.lastname} })
-      };
+      }
+      else return res.json({success: false, message: "Incorrect Password!"});
     }
   );
 });
@@ -171,7 +183,31 @@ router.post("/changePassword", (req, res)=>{
         return res.json({ success: true });
       })
     }
+    else{
+      return res.json({ success: false, message: "Incorrect Password!" });
+    }
   })
+});
+
+router.post("/forgetPassword", (req, res)=>{
+  User.findOne({username: req.body.username, email: req.body.email}, (err, user)=>{
+    if (err) return res.json({ success: false, error: err });
+    if (user == null)
+      return res.json({ success: false, message: "User don't exist." });
+    var salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    var password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    User.findOneAndUpdate({username: user.username, password: user.password}, {password: passwordHashing(password, salt), salt: salt}, (err)=>{
+      if (err) return res.json({ success: false, error: err });
+      mail = {
+        from : 'platformtest147@gmail.com', 
+        to: user.email, 
+        subject: 'Reset Password from UBPlatform.',
+        text: 'Here is your new password:\n' + password + '\n' + 'Please change your password under Account Page as soon as possible. \n\n UBPlatform'
+      }
+      transporter.sendMail(mail);
+      return res.json({ success: true });
+    });
+  });
 });
 
 router.post("/search", (req, res) => {
