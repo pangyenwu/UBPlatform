@@ -11,7 +11,7 @@ class login extends Component {
       .then(res => {
         if (res.data.user == null) {
           console.log({ success: false, message: "user not found." });
-          alert("User not found");
+          alert("Username or Password is incorrect.");
           return 0;
         }
         this.props.login(res.data.user);
