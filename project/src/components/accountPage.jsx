@@ -18,7 +18,9 @@ class AccountPage extends Component {
         Header: "Email",
         accessor: "email"
       }
-    ]
+    ],
+    password: "",
+    newPassword: ""
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -56,6 +58,19 @@ class AccountPage extends Component {
       });
   };
 
+  updatePassword = (oldPass, newPass) => {
+    axios.post(this.props.api+"/changePassword", {
+      username: this.props.user.username,
+      password: oldPass,
+      newPassword : newPass
+     })
+     .then(res => {
+       if (res.data.success) alert("Password Update Successfully!");
+       else alert("Incorrect Password!");
+       this.props.signOut();
+     })
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -72,6 +87,28 @@ class AccountPage extends Component {
             <td>{this.props.user.email}</td>
           </tr>
         </table>
+        <details>
+          <summary>Change Password</summary>
+          <label>
+          Current Password:
+          <input
+            type="text"
+            onChange={e => this.setState({ password: e.target.value })}
+            placeholder=""
+            style={{ width: "200px" }}
+          />
+          </label>
+          <label>
+            New Password:
+            <input
+              type="text"
+              onChange={e => this.setState({ newPassword: e.target.value })}
+              placeholder=""
+              style={{ width: "200px" }}
+            />
+          </label>
+          <button onClick={()=>{this.updatePassword(this.state.password, this.state.newPassword)}}>Update Password</button>
+        </details>
         <hr />
         <h2 style={{ textAlign: "center" }}>
           Here is the book you are currently selling

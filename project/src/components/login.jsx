@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import { LoginWrapper, LoginBox, Input, Button } from "./loginStyle";
 import axios from "axios";
+import ResetPass from './resetPass';
 
 class login extends Component {
-  state = { username: null, password: null };
+  state = { username: "", password: "" };
 
   LogintoDB = json => {
     axios
       .post(this.props.api +"/login", json)
       .then(res => {
-        if (res.data.user == null) {
-          console.log({ success: false, message: "user not found." });
-          alert("User not found");
+        if (!res.data.success && res.data.user == null) {
+          alert("Username or Password is incorrect.");
           return 0;
         }
         this.props.login(res.data.user);
@@ -53,6 +53,7 @@ class login extends Component {
             >
               Login to System
             </Button>
+            <a onClick={()=>this.props.setContent(<ResetPass setContent={this.props.setContent} api={this.props.api}/>)}>Forget Password?</a>
           </LoginBox>
         </LoginWrapper>
       </React.Fragment>
