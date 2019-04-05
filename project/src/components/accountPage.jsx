@@ -49,7 +49,7 @@ class AccountPage extends Component {
   //new function for getting current selling book
   getMyCurrentSellingBook = () => {
     axios
-      .post(this.props.api+"/search", {
+      .post(this.props.api + "/search", {
         owner: this.props.user.username
       })
       .then(res => {
@@ -59,7 +59,6 @@ class AccountPage extends Component {
         console.log(err);
       });
   };
-
 
   addInter = obj => {
     axios
@@ -74,19 +73,19 @@ class AccountPage extends Component {
       .catch(err => {
         console.log(err);
       });
-
+  };
   updatePassword = (oldPass, newPass) => {
-    axios.post(this.props.api+"/changePassword", {
-      username: this.props.user.username,
-      password: oldPass,
-      newPassword : newPass
-     })
-     .then(res => {
-       if (res.data.success) alert("Password Update Successfully!");
-       else alert("Incorrect Password!");
-       this.props.signOut();
-     })
-
+    axios
+      .post(this.props.api + "/changePassword", {
+        username: this.props.user.username,
+        password: oldPass,
+        newPassword: newPass
+      })
+      .then(res => {
+        if (res.data.success) alert("Password Update Successfully!");
+        else alert("Incorrect Password!");
+        this.props.signOut();
+      });
   };
 
   render() {
@@ -108,13 +107,13 @@ class AccountPage extends Component {
         <details>
           <summary>Change Password</summary>
           <label>
-          Current Password:
-          <input
-            type="text"
-            onChange={e => this.setState({ password: e.target.value })}
-            placeholder=""
-            style={{ width: "200px" }}
-          />
+            Current Password:
+            <input
+              type="text"
+              onChange={e => this.setState({ password: e.target.value })}
+              placeholder=""
+              style={{ width: "200px" }}
+            />
           </label>
           <label>
             New Password:
@@ -125,7 +124,13 @@ class AccountPage extends Component {
               style={{ width: "200px" }}
             />
           </label>
-          <button onClick={()=>{this.updatePassword(this.state.password, this.state.newPassword)}}>Update Password</button>
+          <button
+            onClick={() => {
+              this.updatePassword(this.state.password, this.state.newPassword);
+            }}
+          >
+            Update Password
+          </button>
         </details>
         <hr />
         <h2 style={{ textAlign: "center" }}>Selects your interests of book:</h2>

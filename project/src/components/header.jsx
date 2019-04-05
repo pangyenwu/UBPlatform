@@ -30,14 +30,26 @@ class Header extends Component {
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login setContent={this.props.setContent} login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Login
+                setContent={this.props.setContent}
+                login={this.login}
+                api={this.props.api}
+              />
+            )
+          }
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Register login={this.login} api={this.props.api} />
+            )
+          }
         >
           Register
         </Button>
@@ -53,7 +65,13 @@ class Header extends Component {
 
   login = users => {
     if (users == null) {
-      this.props.setContent(<Login setContent={this.props.setContent} login={this.login} api={this.props.api}/>);
+      this.props.setContent(
+        <Login
+          setContent={this.props.setContent}
+          login={this.login}
+          api={this.props.api}
+        />
+      );
       return 0;
     }
 
@@ -62,12 +80,12 @@ class Header extends Component {
     this.props.setContent(
       <AccountPage
         user={users}
+        api={this.props.api}
+        signOut={this.signOut}
         updateInter={this.updateInter}
         randomBook={this.randomBook}
       />
     );
-    this.setState({ user: users });
-    this.props.setContent(<AccountPage user={users} api={this.props.api} signOut={this.signOut}/>)
     this.setTopRight(
       <Button
         style={{ margin: "5px" }}
@@ -81,21 +99,33 @@ class Header extends Component {
   };
 
   signOut = () => {
-    this.props.setContent(<Body api={this.props.api}/>);
-    this.setState({ user: null });
+    this.props.setContent(<Body api={this.props.api} />);
+    this.setState({ user: null, currInterests: [], randomBook: [] });
     this.setTopRight(
       <React.Fragment>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login setContent={this.props.setContent} login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Login
+                setContent={this.props.setContent}
+                login={this.login}
+                api={this.props.api}
+              />
+            )
+          }
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Register login={this.login} api={this.props.api} />
+            )
+          }
         >
           Register
         </Button>
@@ -206,7 +236,7 @@ class Header extends Component {
             <Nav.Link
               href="#home"
               onSelect={() => {
-                this.props.setContent(<Body api={this.props.api}/>);
+                this.props.setContent(<Body api={this.props.api} />);
               }}
             >
               Home
@@ -232,9 +262,7 @@ class Header extends Component {
               InterestsPage
             </Nav.Link>
           </Nav>
-          <Form inline>
-            {this.state.topRight}
-          </Form>
+          <Form inline>{this.state.topRight}</Form>
         </Navbar.Collapse>
       </Navbar>
     );
