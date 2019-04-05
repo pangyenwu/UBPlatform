@@ -217,9 +217,45 @@ router.post("/search", (req, res) => {
   });
 });
 
+
+router.post("/guessYouLike", (req, res) => {
+  Data.find(req.body, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    let random = Math.floor(Math.random() * Math.floor(3));
+    console.log("all books: " + data[random]._id);
+    return res.json({ success: true, data: data[random] });
+  });
+});
+
+//put interests in a user
+router.post("/putInterests", (req, res) => {
+  User.findOne({ username: req.body.username }, (err, users) => {
+    if (err) return res.json({ success: false, error: err });
+
+    if (users.interestsList.includes(req.body.course)) {
+      console.log("found tha english already added!!!!!!!!");
+      return res.json({ success: false, message: "Interests already exist" });
+    }
+    users.interestsList.push(req.body.course);
+    users.save(err => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, message: "Interests added" });
+    });
+  });
+});
+
+//get user's interests list
+router.post("/getInterests", (req, res) => {
+  User.findOne({ username: req.body.username }, (err, users) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: users.interestsList });
+  });
+});
+
 function passwordHashing(password, salt){
   return sha256((password+salt));
 }
+
 
 // append /api for our http requests
 app.use("/api", router);

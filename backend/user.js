@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   firstname: String,
   lastname: String,
   password: String,
+  interestsList: [],
   salt: String
 });
 
