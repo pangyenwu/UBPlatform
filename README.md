@@ -8,5 +8,5 @@ Scrum Board Links:
 https://trello.com/b/7q6AaNh7/ubplatform
 
 Task Tracking:
-Use Github Issue
+See Scrum Board
 

@@ -9,7 +9,8 @@ const UserSchema = new Schema({
   firstname: String,
   lastname: String,
   password: String,
-  interestsList: []
+  interestsList: [],
+  salt: String
 });
 
 // export the new Schema so we could modify it using Node.js

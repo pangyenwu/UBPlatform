@@ -7,8 +7,20 @@ const Data = require("./data");
 const User = require("./user");
 const { ObjectId } = require("mongodb");
 const mongodb = require("mongodb");
+const sha256 = require("js-sha256").sha256;
+const nodemailer = require('nodemailer');
 const API_PORT = 3001;
 const app = express();
+
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'platformtest147@gmail.com',
+    pass: 'CSE442@platformmail'
+  }
+});
 
 //setup whitelist for http request
 //When upoad to server, make sure this is live and prevent un indentify request
@@ -111,7 +123,9 @@ router.post("/putUser", (req, res) => {
     user.email = email;
     user.firstname = firstname;
     user.lastname = lastname;
-    user.password = password;
+    var salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    user.salt = salt;
+    user.password = passwordHashing(password,salt);
     user.save(err => {
       if (err) return res.json({ success: false, error: err });
       return res.json({ success: true, message: "User Register" });
@@ -121,35 +135,79 @@ router.post("/putUser", (req, res) => {
 
 router.post("/unregister", (req, res) => {
   User.findOne(
-    { username: req.body.username, password: req.body.password },
+    { username: req.body.username },
     (err, user) => {
       if (err) return res.json({ success: false, error: err });
       if (user == null)
         return res.json({ success: false, message: "user not found." });
-      Data.find({ owner: user.username }, (err, data) => {
+      if(user.password == passwordHashing(req.body.password, user.salt)){
+        User.findOneAndDelete({username: user.username, password: user.password});
+        Data.deleteMany({ owner: user.username }, (err) => {
         if (err) return res.json({ success: false, error: err });
-        data.map(book => {
-          Data.findByIdAndDelete(book._id, (err, res) => {
-            if (err)
-              return res.json({ success: false, message: "unable to delete" });
-          });
+        return res.json({success: true});
         });
-        return res.json({ success: true, message: "delete all books." });
-      });
+      }
     }
   );
 });
 
 router.post("/login", (req, res) => {
   User.findOne(
-    { username: req.body.username, password: req.body.password },
+    { username: req.body.username},
     function(err, user) {
       if (err) return res.json({ success: false, error: err });
       if (user == null)
-        return res.json({ success: false, message: "User Don't Exist." });
-      return res.json({ success: true, user: user });
+        return res.json({ success: false, message: "Username or Password is incorrect." });
+      if(user.password == passwordHashing(req.body.password, user.salt)){ 
+        return res.json({ success: true, user: {
+          username: user.username,
+          email: user.email,
+          firstname: user.firstname,
+          lastname: user.lastname} })
+      }
+      else return res.json({success: false, message: "Incorrect Password!"});
     }
   );
+});
+
+router.post("/changePassword", (req, res)=>{
+  User.findOne({username: req.body.username}, (err, user)=>{
+    if (err) return res.json({ success: false, error: err });
+    if (user == null)
+      return res.json({ success: false, message: "User don't exist." });
+    if (user.password == passwordHashing(req.body.password, user.salt)){
+      var salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      var password = passwordHashing(req.body.newPassword, salt);
+      User.findOneAndUpdate({username: user.username, password: user.password}, {password: password, salt: salt}, (err)=>{
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true });
+      })
+    }
+    else{
+      return res.json({ success: false, message: "Incorrect Password!" });
+    }
+  })
+});
+
+router.post("/forgetPassword", (req, res)=>{
+  User.findOne({username: req.body.username, email: req.body.email}, (err, user)=>{
+    if (err) return res.json({ success: false, error: err });
+    if (user == null)
+      return res.json({ success: false, message: "User don't exist." });
+    var salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    var password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    User.findOneAndUpdate({username: user.username, password: user.password}, {password: passwordHashing(password, salt), salt: salt}, (err)=>{
+      if (err) return res.json({ success: false, error: err });
+      mail = {
+        from : 'platformtest147@gmail.com', 
+        to: user.email, 
+        subject: 'Reset Password from UBPlatform.',
+        text: 'Here is your new password:\n' + password + '\n' + 'Please change your password under Account Page as soon as possible. \n\n UBPlatform'
+      }
+      transporter.sendMail(mail);
+      return res.json({ success: true });
+    });
+  });
 });
 
 router.post("/search", (req, res) => {
@@ -158,6 +216,7 @@ router.post("/search", (req, res) => {
     return res.json({ success: true, data: data });
   });
 });
+
 
 router.post("/guessYouLike", (req, res) => {
   Data.find(req.body, (err, data) => {
@@ -192,6 +251,11 @@ router.post("/getInterests", (req, res) => {
     return res.json({ success: true, data: users.interestsList });
   });
 });
+
+function passwordHashing(password, salt){
+  return sha256((password+salt));
+}
+
 
 // append /api for our http requests
 app.use("/api", router);

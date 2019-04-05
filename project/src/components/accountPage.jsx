@@ -20,7 +20,9 @@ class AccountPage extends Component {
         Header: "Email",
         accessor: "email"
       }
-    ]
+    ],
+    password: "",
+    newPassword: ""
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -47,7 +49,7 @@ class AccountPage extends Component {
   //new function for getting current selling book
   getMyCurrentSellingBook = () => {
     axios
-      .post("http://localhost:3001/api/search", {
+      .post(this.props.api+"/search", {
         owner: this.props.user.username
       })
       .then(res => {
@@ -57,6 +59,7 @@ class AccountPage extends Component {
         console.log(err);
       });
   };
+
 
   addInter = obj => {
     axios
@@ -71,6 +74,19 @@ class AccountPage extends Component {
       .catch(err => {
         console.log(err);
       });
+
+  updatePassword = (oldPass, newPass) => {
+    axios.post(this.props.api+"/changePassword", {
+      username: this.props.user.username,
+      password: oldPass,
+      newPassword : newPass
+     })
+     .then(res => {
+       if (res.data.success) alert("Password Update Successfully!");
+       else alert("Incorrect Password!");
+       this.props.signOut();
+     })
+
   };
 
   render() {
@@ -89,6 +105,28 @@ class AccountPage extends Component {
             <td>{this.props.user.email}</td>
           </tr>
         </table>
+        <details>
+          <summary>Change Password</summary>
+          <label>
+          Current Password:
+          <input
+            type="text"
+            onChange={e => this.setState({ password: e.target.value })}
+            placeholder=""
+            style={{ width: "200px" }}
+          />
+          </label>
+          <label>
+            New Password:
+            <input
+              type="text"
+              onChange={e => this.setState({ newPassword: e.target.value })}
+              placeholder=""
+              style={{ width: "200px" }}
+            />
+          </label>
+          <button onClick={()=>{this.updatePassword(this.state.password, this.state.newPassword)}}>Update Password</button>
+        </details>
         <hr />
         <h2 style={{ textAlign: "center" }}>Selects your interests of book:</h2>
         <div>
@@ -148,11 +186,11 @@ class AccountPage extends Component {
 
         <div>
           {this.state.currentSellingBook.map(book => (
-            <BookCardInfo key={book._id} bookInfo={book} />
+            <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
           ))}
         </div>
 
-        <AddBook username={this.props.user.username} />
+        <AddBook username={this.props.user.username} api={this.props.api} />
       </React.Fragment>
     );
   }
