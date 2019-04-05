@@ -5,6 +5,8 @@ import axios from "axios";
 
 class AccountPage extends Component {
   state = {
+    buttonClass: "btn btn-secondary",
+    buttonClassOp: ["btn btn-secondary", "btn btn-primary"],
     name: this.props.user.firstname,
     email: this.props.user.email,
     currentSellingBook: [],
@@ -56,6 +58,21 @@ class AccountPage extends Component {
       });
   };
 
+  addInter = obj => {
+    axios
+      .post("http://localhost:3001/api/putInterests", obj)
+      .then(res => {
+        if (!res.data.success) {
+          console.log(res.data.message);
+        } else {
+          console.log(res.data.message);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -72,6 +89,58 @@ class AccountPage extends Component {
             <td>{this.props.user.email}</td>
           </tr>
         </table>
+        <hr />
+        <h2 style={{ textAlign: "center" }}>Selects your interests of book:</h2>
+        <div>
+          <button
+            style={{ margin: "5px" }}
+            type="button"
+            class={this.state.buttonClass}
+            onClick={() => {
+              this.addInter({
+                course: "English",
+                username: this.props.user.username
+              });
+              this.props.updateInter("English");
+              this.props.randomBook();
+            }}
+          >
+            English
+          </button>
+          <button
+            style={{ margin: "5px" }}
+            type="button"
+            class={this.state.buttonClass}
+            onClick={() => {
+              this.addInter({
+                course: "CSE",
+                username: this.props.user.username
+              });
+              this.props.updateInter("CSE");
+              this.props.randomBook();
+            }}
+          >
+            CSE
+          </button>
+          <button
+            style={{ margin: "5px" }}
+            type="button"
+            class={this.state.buttonClass}
+            onClick={() => {
+              this.addInter({
+                course: "History",
+                username: this.props.user.username
+              });
+              this.props.updateInter("History");
+              this.props.randomBook();
+            }}
+          >
+            History
+          </button>
+
+          <span />
+        </div>
+
         <hr />
         <h2 style={{ textAlign: "center" }}>
           Here is the book you are currently selling

@@ -3,6 +3,7 @@ import "./App.css";
 import Body from "./components/body";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import InterestsPage from "./components/interestsPage";
 import axios from "axios";
 
 class App extends Component {

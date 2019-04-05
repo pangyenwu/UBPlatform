@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { RegisterWrapper, RegisterBox, Input, Button } from "./registerStyle";
 import axios from "axios";
+import FacebookLogin from "react-facebook-login";
 
 class Register extends Component {
   state = {
@@ -79,7 +80,8 @@ class Register extends Component {
                   email: this.state.email,
                   firstname: this.state.firstname,
                   lastname: this.state.lastname,
-                  password: this.state.password
+                  password: this.state.password,
+                  interestsList: []
                 })
               }
             >
