@@ -133,23 +133,6 @@ class Header extends Component {
     );
   };
 
-  // search = obj => {
-  //   axios
-  //     .post(this.props.api+"/search", obj)
-  //     .then(res => {
-  //       this.props.setContent(
-  //         <React.Fragment>
-  //           {res.data.data.map(book => (
-  //             <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
-  //           ))}
-  //         </React.Fragment>
-  //       );
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // };
-
   //display random books using current user interests
   randomBook = () => {
     if (this.state.user == null) {
@@ -162,7 +145,7 @@ class Header extends Component {
       for (let i = 0; i < interList.length; i++) {
         setTimeout(function() {
           axios
-            .post("http://localhost:3001/api/search", { course: interList[i] })
+            .post(this.props.api +"/search", { course: interList[i] })
             .then(res => {
               console.log("loop add random books round: " + i);
               console.log("the res data length: " + res.data.data.length);
@@ -255,7 +238,7 @@ class Header extends Component {
                 //this.randomBook();
                 //this.updateInterPage();
                 this.props.setContent(
-                  <InterestsPage randomBook={this.state.randomBook} />
+                  <InterestsPage api={this.props.api} randomBook={this.state.randomBook} />
                 );
               }}
             >

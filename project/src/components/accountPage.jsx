@@ -62,7 +62,7 @@ class AccountPage extends Component {
 
   addInter = obj => {
     axios
-      .post("http://localhost:3001/api/putInterests", obj)
+      .post(this.props.api +"/putInterests", obj)
       .then(res => {
         if (!res.data.success) {
           console.log(res.data.message);

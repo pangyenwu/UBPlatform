@@ -10,7 +10,7 @@ class InterestsPage extends Component {
 
   getDataFromDb = obj => {
     axios
-      .post("http://localhost:3001/api/guessYouLike", obj)
+      .post(this.props.api +"/guessYouLike", obj)
       .then(res => {
         console.log(res.data.data._id);
         this.state.data[0] = res.data.data;
