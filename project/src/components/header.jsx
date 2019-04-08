@@ -143,10 +143,11 @@ class Header extends Component {
       let interList = this.state.currInterests;
       let localRandomBook = [];
       let localTime = 0;
+      var api = this.props.api;
       for (let i = 0; i < interList.length; i++) {
         setTimeout(function() {
           axios
-            .post(this.props.api + "/search", { course: interList[i] })
+            .post(api + "/search", { course: interList[i] })
             .then(res => {
               console.log("loop add random books round: " + i);
               console.log("the res data length: " + res.data.data.length);
