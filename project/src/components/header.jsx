@@ -137,7 +137,6 @@ class Header extends Component {
   //display random books using current user interests
   randomBook = () => {
     if (this.state.user == null) {
-      console.log("did not find user.");
       return false; //error?
     } else {
       let interList = this.state.currInterests;
@@ -149,17 +148,8 @@ class Header extends Component {
           axios
             .post(api + "/search", { course: interList[i] })
             .then(res => {
-              console.log("loop add random books round: " + i);
-              console.log("the res data length: " + res.data.data.length);
               localTime = res.data.data.length;
-              if (res.data.data.legnth == 0) {
-                console.log(
-                  "this is when data is empty. should not get this because this error will be catched"
-                );
-              } else if (res.data.data.legnth == 1) {
-                console.log(
-                  "TEST HISTORY COURSE: should see this message because there is only one book of History"
-                );
+              if (res.data.data.legnth == 1) {
                 localRandomBook.push(res.data.data[0]);
               } else {
                 let random1 = Math.floor(
@@ -192,10 +182,8 @@ class Header extends Component {
     let tempInter = this.state.currInterests;
     if (!tempInter.includes(obj)) {
       tempInter.push(obj);
-      console.log("push new Interests to header successfully!!!!!!!");
     }
     for (let i = 0; i < tempInter.length; i++) {
-      console.log("inter " + i + " in newInterlist: " + tempInter[i]);
     }
     this.setState({ currInterests: tempInter });
   };

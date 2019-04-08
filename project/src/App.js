@@ -59,7 +59,7 @@ class App extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: "#D8D8D8" }}>
+      <div style={{ backgroundColor: "white" }}>
         <Header setContent={this.setContent} api={this.state.api} />
         {/* <button onClick={this.deleteAll}>Delete All Book</button> */}
         {this.state.content}

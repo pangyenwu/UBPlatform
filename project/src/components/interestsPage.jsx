@@ -10,9 +10,8 @@ class InterestsPage extends Component {
 
   getDataFromDb = obj => {
     axios
-      .post(this.props.api +"/guessYouLike", obj)
+      .post(this.props.api + "/guessYouLike", obj)
       .then(res => {
-        console.log(res.data.data._id);
         this.state.data[0] = res.data.data;
       })
       .catch(err => {
@@ -23,9 +22,6 @@ class InterestsPage extends Component {
   render() {
     return (
       <div>
-        {/* {this.randomBook()} */}
-        {console.log("4")}
-        {console.log("props randomBook: " + this.props.randomBook.length)}
         {this.props.randomBook.map(book => (
           <BookCardInfo key={book._id} bookInfo={book} />
         ))}

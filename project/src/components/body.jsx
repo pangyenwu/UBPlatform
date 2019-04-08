@@ -161,6 +161,13 @@ class Body extends Component {
             Reset
           </Button>
         </div>
+        <hr/>
+
+        <div>
+          {this.state.pages.map(book => (
+            <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
+          ))}
+        </div>
         <hr />
         <div style={{ margin: "5px", marginLeft: "38%" }}>
           <Button
@@ -180,13 +187,6 @@ class Body extends Component {
           >
             Next Page
           </Button>
-        </div>
-        <hr/>
-
-        <div>
-          {this.state.pages.map(book => (
-            <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
-          ))}
         </div>
       </div>
     );
