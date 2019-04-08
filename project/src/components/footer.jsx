@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import PolicyPage from "./policyPage.jsx";
+import { Nav } from "react-bootstrap";
+import { SocialIcon } from "react-social-icons";
 import "./footerStyle.css";
 
 class Footer extends Component {
@@ -48,13 +51,27 @@ class Footer extends Component {
               </div>
             </div>
           </div>
-
+          <Nav>
+            <Nav.Link
+              href="#policyPage"
+              onSelect={() => {
+                this.props.setContent(<PolicyPage />);
+              }}
+            >
+              Policy
+            </Nav.Link>
+          </Nav>
           <div
             className="footer-copyright text-center py-3"
             style={{ color: "white" }}
           >
             <p>© 2019 Copyright</p>
             <a href="https://www.google.com/"> www.ubplatform.com</a>
+          </div>
+          <div class="icon">
+            <SocialIcon url="http://twitter.com/" />
+            <SocialIcon url="http://facebook.com/" />
+            <SocialIcon url="http://linkedin.com/" />
           </div>
         </footer>
       </div>

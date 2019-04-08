@@ -9,7 +9,7 @@ import axios from "axios";
 class App extends Component {
   // initialize our state
   state = {
-    api : "http://localhost:3001/api",
+    api: "http://localhost:3001/api",
     content: null,
     deleteByIdFromDB: null,
     book: [
@@ -30,14 +30,14 @@ class App extends Component {
     ]
   };
 
-  componentDidMount(){
-    this.setState({content: <Body api={this.state.api}/>});
+  componentDidMount() {
+    this.setState({ content: <Body api={this.state.api} /> });
   }
 
   //Warning! This is use for test purpose, This will delete all data in database
   deleteAll = () => {
     this.state.data.forEach(dat => {
-      axios.delete(this.state.api+"/deleteByIdData", {
+      axios.delete(this.state.api + "/deleteByIdData", {
         data: {
           id: dat._id
         }
@@ -49,7 +49,7 @@ class App extends Component {
   // arrBook = array of JSON that contain book information (see dataschema for detail)
   addAll = arrBook => {
     arrBook.forEach(bok => {
-      axios.post(this.state.api+"/putData", bok);
+      axios.post(this.state.api + "/putData", bok);
     });
   };
 
@@ -60,10 +60,10 @@ class App extends Component {
   render() {
     return (
       <div style={{ backgroundColor: "#D8D8D8" }}>
-        <Header setContent={this.setContent} api={this.state.api}/>
+        <Header setContent={this.setContent} api={this.state.api} />
         {/* <button onClick={this.deleteAll}>Delete All Book</button> */}
         {this.state.content}
-        <Footer />
+        <Footer setContent={this.setContent} api={this.state.api} />
       </div>
     );
   }

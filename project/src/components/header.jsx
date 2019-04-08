@@ -14,6 +14,7 @@ import axios from "axios";
 import BookCardInfo from "./bookCardInfo";
 import InterestsPage from "./interestsPage";
 import { setTimeout } from "timers";
+import ReportPage from "./reportPage";
 
 class Header extends Component {
   state = {
@@ -142,10 +143,11 @@ class Header extends Component {
       let interList = this.state.currInterests;
       let localRandomBook = [];
       let localTime = 0;
+      var api = this.props.api;
       for (let i = 0; i < interList.length; i++) {
         setTimeout(function() {
           axios
-            .post(this.props.api +"/search", { course: interList[i] })
+            .post(api + "/search", { course: interList[i] })
             .then(res => {
               console.log("loop add random books round: " + i);
               console.log("the res data length: " + res.data.data.length);
@@ -232,13 +234,25 @@ class Header extends Component {
             >
               Account
             </Nav.Link>
+
+            <Nav.Link
+              href="#reportPage"
+              onSelect={() => {
+                this.props.setContent(<ReportPage />);
+              }}
+            >
+              Report
+            </Nav.Link>
             <Nav.Link
               href="#InterestsPage"
               onSelect={() => {
                 //this.randomBook();
                 //this.updateInterPage();
                 this.props.setContent(
-                  <InterestsPage api={this.props.api} randomBook={this.state.randomBook} />
+                  <InterestsPage
+                    api={this.props.api}
+                    randomBook={this.state.randomBook}
+                  />
                 );
               }}
             >
