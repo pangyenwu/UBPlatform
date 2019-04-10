@@ -12,9 +12,18 @@ import Login from "./login";
 import Register from "./register";
 import axios from "axios";
 import BookCardInfo from "./bookCardInfo";
+import InterestsPage from "./interestsPage";
+import { setTimeout } from "timers";
+import ReportPage from "./reportPage";
 
 class Header extends Component {
-  state = { input: null, user: null, topRight: null };
+  state = {
+    input: null,
+    user: null,
+    topRight: null,
+    randomBook: [],
+    currInterests: []
+  };
 
   componentDidMount() {
     this.setTopRight(
@@ -22,14 +31,26 @@ class Header extends Component {
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Login
+                setContent={this.props.setContent}
+                login={this.login}
+                api={this.props.api}
+              />
+            )
+          }
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Register login={this.login} api={this.props.api} />
+            )
+          }
         >
           Register
         </Button>
@@ -45,11 +66,27 @@ class Header extends Component {
 
   login = users => {
     if (users == null) {
-      this.props.setContent(<Login login={this.login} api={this.props.api}/>);
+      this.props.setContent(
+        <Login
+          setContent={this.props.setContent}
+          login={this.login}
+          api={this.props.api}
+        />
+      );
       return 0;
     }
-    this.setState({ user: users });
-    this.props.setContent(<AccountPage user={users} api={this.props.api}/>);
+
+    this.setState({ user: users, currInterests: users.interestsList });
+    this.randomBook();
+    this.props.setContent(
+      <AccountPage
+        user={users}
+        api={this.props.api}
+        signOut={this.signOut}
+        updateInter={this.updateInter}
+        randomBook={this.randomBook}
+      />
+    );
     this.setTopRight(
       <Button
         style={{ margin: "5px" }}
@@ -63,21 +100,33 @@ class Header extends Component {
   };
 
   signOut = () => {
-    this.props.setContent(<Body api={this.props.api}/>);
-    this.setState({ user: null });
+    this.props.setContent(<Body api={this.props.api} />);
+    this.setState({ user: null, currInterests: [], randomBook: [] });
     this.setTopRight(
       <React.Fragment>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Login login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Login
+                setContent={this.props.setContent}
+                login={this.login}
+                api={this.props.api}
+              />
+            )
+          }
         >
           Login
         </Button>
         <Button
           style={{ margin: "5px" }}
           variant="outline-primary"
-          onClick={() => this.props.setContent(<Register login={this.login} api={this.props.api}/>)}
+          onClick={() =>
+            this.props.setContent(
+              <Register login={this.login} api={this.props.api} />
+            )
+          }
         >
           Register
         </Button>
@@ -85,21 +134,58 @@ class Header extends Component {
     );
   };
 
-  search = obj => {
-    axios
-      .post(this.props.api+"/search", obj)
-      .then(res => {
-        this.props.setContent(
-          <React.Fragment>
-            {res.data.data.map(book => (
-              <BookCardInfo key={book._id} bookInfo={book} api={this.props.api} />
-            ))}
-          </React.Fragment>
-        );
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  //display random books using current user interests
+  randomBook = () => {
+    if (this.state.user == null) {
+      return false; //error?
+    } else {
+      let interList = this.state.currInterests;
+      let localRandomBook = [];
+      let localTime = 0;
+      var api = this.props.api;
+      for (let i = 0; i < interList.length; i++) {
+        setTimeout(function() {
+          axios
+            .post(api + "/search", { course: interList[i] })
+            .then(res => {
+              localTime = res.data.data.length;
+              if (res.data.data.legnth == 1) {
+                localRandomBook.push(res.data.data[0]);
+              } else {
+                let random1 = Math.floor(
+                  Math.random() * Math.floor(res.data.data.length)
+                );
+                let random2 = Math.floor(
+                  Math.random() * Math.floor(res.data.data.length)
+                );
+                while (random2 == random1) {
+                  random2 = Math.floor(
+                    Math.random() * Math.floor(res.data.data.length)
+                  );
+                }
+                localRandomBook.push(res.data.data[random1]);
+                localRandomBook.push(res.data.data[random2]);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }, localTime);
+      }
+
+      //after for loop
+      this.setState({ randomBook: localRandomBook });
+    }
+  };
+
+  updateInter = obj => {
+    let tempInter = this.state.currInterests;
+    if (!tempInter.includes(obj)) {
+      tempInter.push(obj);
+    }
+    for (let i = 0; i < tempInter.length; i++) {
+    }
+    this.setState({ currInterests: tempInter });
   };
 
   render() {
@@ -123,10 +209,10 @@ class Header extends Component {
             <Nav.Link
               href="#home"
               onSelect={() => {
-                this.props.setContent(<Body api={this.props.api}/>);
+                this.props.setContent(<Body api={this.props.api} />);
               }}
             >
-              >Home
+              Home
             </Nav.Link>
             <Nav.Link
               href="#accountPage"
@@ -136,55 +222,32 @@ class Header extends Component {
             >
               Account
             </Nav.Link>
-          </Nav>
-          <Form inline>
-            <NavDropdown title="Filter" id="basic-nav-dropdown">
-              <NavDropdown.Item
-                href="#action/3.1"
-                onClick={() => {
-                  this.search({ course: "CSE" });
-                }}
-              >
-                CSE
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href="#action/3.2"
-                onClick={() => {
-                  this.search({ course: "English" });
-                }}
-              >
-                English
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href="#action/3.3"
-                onClick={() => {
-                  this.search({ course: "History" });
-                }}
-              >
-                History
-              </NavDropdown.Item>
-              {/* <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Test</NavDropdown.Item> */}
-            </NavDropdown>
-            <input
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-              onChange={e => {
-                this.setState({ input: e.target.value });
-              }}
-            />
-            <Button
-              style={{ margin: "5px" }}
-              variant="outline-primary"
-              onClick={() => {
-                this.search({ title: this.state.input });
+
+            <Nav.Link
+              href="#reportPage"
+              onSelect={() => {
+                this.props.setContent(<ReportPage />);
               }}
             >
-              Search
-            </Button>
-            {this.state.topRight}
-          </Form>
+              Report
+            </Nav.Link>
+            <Nav.Link
+              href="#InterestsPage"
+              onSelect={() => {
+                //this.randomBook();
+                //this.updateInterPage();
+                this.props.setContent(
+                  <InterestsPage
+                    api={this.props.api}
+                    randomBook={this.state.randomBook}
+                  />
+                );
+              }}
+            >
+              InterestsPage
+            </Nav.Link>
+          </Nav>
+          <Form inline>{this.state.topRight}</Form>
         </Navbar.Collapse>
       </Navbar>
     );
