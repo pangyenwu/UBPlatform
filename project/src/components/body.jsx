@@ -64,7 +64,7 @@ class Body extends Component {
     });
   };
 
-  search(type, input) {
+  search = (type, input) => {
     var books = [];
     this.state.data.map(book => {
       if (book[type] && book[type].toLowerCase().includes(input))

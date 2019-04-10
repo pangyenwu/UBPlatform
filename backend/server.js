@@ -291,7 +291,7 @@ router.post("/getInterests", (req, res) => {
   });
 });
 
-function passwordHashing(password, salt) {
+exports.passwordHashing = (password, salt) => {
   return sha256(password + salt);
 }
 
