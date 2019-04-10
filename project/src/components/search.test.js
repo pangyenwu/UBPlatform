@@ -7,7 +7,7 @@ import Body from './body';
 
 
 var body = mount(<Body api="http://3.18.110.2:3001/api" />);
-describe('App.js Test Case 02', () => {
+describe('Search Test Case 02', () => {
     it('Test API is http://3.18.110.2:3001/api', () => {
         expect(body.props().api).toEqual("http://3.18.110.2:3001/api");
     });

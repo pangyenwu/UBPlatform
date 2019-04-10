@@ -85,6 +85,7 @@ class AccountPage extends Component {
         if (res.data.success) alert("Password Update Successfully!");
         else alert("Incorrect Password!");
         this.props.signOut();
+        return res.data;
       });
   };
 

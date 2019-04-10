@@ -16,6 +16,7 @@ class ResetPass extends Component {
             else{
                 alert("Username or Email is incorrect!");
             }
+            return res.data;
         })
     };
 
