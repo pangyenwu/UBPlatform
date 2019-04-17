@@ -1,15 +1,15 @@
 {
-  "main.css": "/UBPlatform/static/css/main.50bc22df.chunk.css",
-  "main.js": "/UBPlatform/static/js/main.90ffa6d6.chunk.js",
-  "main.js.map": "/UBPlatform/static/js/main.90ffa6d6.chunk.js.map",
+  "main.css": "/UBPlatform/static/css/main.ab1dd063.chunk.css",
+  "main.js": "/UBPlatform/static/js/main.c6d48f4d.chunk.js",
+  "main.js.map": "/UBPlatform/static/js/main.c6d48f4d.chunk.js.map",
   "runtime~main.js": "/UBPlatform/static/js/runtime~main.4dabe35e.js",
   "runtime~main.js.map": "/UBPlatform/static/js/runtime~main.4dabe35e.js.map",
-  "static/css/2.e673c61f.chunk.css": "/UBPlatform/static/css/2.e673c61f.chunk.css",
-  "static/js/2.74fbf4ee.chunk.js": "/UBPlatform/static/js/2.74fbf4ee.chunk.js",
-  "static/js/2.74fbf4ee.chunk.js.map": "/UBPlatform/static/js/2.74fbf4ee.chunk.js.map",
+  "static/css/2.2e6ee38a.chunk.css": "/UBPlatform/static/css/2.2e6ee38a.chunk.css",
+  "static/js/2.04b1f2fd.chunk.js": "/UBPlatform/static/js/2.04b1f2fd.chunk.js",
+  "static/js/2.04b1f2fd.chunk.js.map": "/UBPlatform/static/js/2.04b1f2fd.chunk.js.map",
   "index.html": "/UBPlatform/index.html",
-  "precache-manifest.70f21f94d139dcb40d96e144f03a98fa.js": "/UBPlatform/precache-manifest.70f21f94d139dcb40d96e144f03a98fa.js",
+  "precache-manifest.bedf64cae7a6aaf18075662a72032857.js": "/UBPlatform/precache-manifest.bedf64cae7a6aaf18075662a72032857.js",
   "service-worker.js": "/UBPlatform/service-worker.js",
-  "static/css/2.e673c61f.chunk.css.map": "/UBPlatform/static/css/2.e673c61f.chunk.css.map",
-  "static/css/main.50bc22df.chunk.css.map": "/UBPlatform/static/css/main.50bc22df.chunk.css.map"
+  "static/css/2.2e6ee38a.chunk.css.map": "/UBPlatform/static/css/2.2e6ee38a.chunk.css.map",
+  "static/css/main.ab1dd063.chunk.css.map": "/UBPlatform/static/css/main.ab1dd063.chunk.css.map"
 }
