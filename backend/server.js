@@ -25,7 +25,9 @@ var transporter = nodemailer.createTransport({
 const whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "http://localhost:5555"
+  "http://localhost:5555",
+  "http://www.matpan.com/UBPlatform",
+  "https://www.matpan.com/UBPlatform"
 ];
 var corsOptions = {
   origin: function(origin, callback) {
