@@ -22,17 +22,17 @@ class Body extends Component {
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
   componentDidMount() {
-    this.getDataFromDb();
-    //Need better implementation for this in case of slow internet connection
-
-    setTimeout(() => {
-      this.setState({ display: this.state.data,
-        pages: this.getArray(this.state.data, 0,this.state.pageSize < this.state.data.length ? this.state.pageSize : this.state.data.length),
-        totalPage: Math.ceil(this.state.data.length / this.state.pageSize) });
-    }, 500);
-
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
+      let interval = setInterval(()=>{
+        if(this.state.data < 1){
+          this.getDataFromDb();
+          setTimeout(() => {
+            this.setState({ display: this.state.data,
+              pages: this.getArray(this.state.data, 0,this.state.pageSize < this.state.data.length ? this.state.pageSize : this.state.data.length),
+              totalPage: Math.ceil(this.state.data.length / this.state.pageSize) });
+          }, 1000);
+        }
+      }, 1000);
       this.setState({ intervalIsSet: interval });
     }
   }
@@ -67,7 +67,7 @@ class Body extends Component {
   search = (type, input) => {
     var books = [];
     this.state.data.map(book => {
-      if (book[type] && book[type].toLowerCase().includes(input))
+      if (book[type] && book[type].toLowerCase().includes(input.toLowerCase()))
         books.push(book);
     });
     this.setState({ display: books, 
