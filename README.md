@@ -15,9 +15,7 @@ See Scrum Board
 
 Currently Depoly on:
 
-http://www.matpan.com/UBPlatform
-Notice: Currently, there's a bug with loading, please click on reset if you don't see any books.
-Also, currently we have issue with server https call, so please run the website in http or able load script.
+https://www.matpan.com/UBPlatform
 
 Requirement:
 
